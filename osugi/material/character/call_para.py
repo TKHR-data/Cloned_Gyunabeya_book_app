@@ -44,8 +44,15 @@ with col2:
     level_text_ph = st.empty()            # 右のテキスト枠
     level_text_ph.write("進化レベル: 0")  # 初期表示
 
-monster_url = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/default_monster.png"
-frame_url   = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/monster_flame.png"
+# Supabaseからユーザーのキャラクター画像URLを取得
+response = supabase.table("character").select("image_URL").eq("user_id_text", user_id_text).execute()
+if response.data and len(response.data) > 0:
+    monster_url = response.data[0]["image_URL"]
+else:
+    # デフォルト画像（該当ユーザーに画像がない場合）
+    monster_url = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/default_monster.png"
+
+frame_url = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/monster_flame.png"
 
 st.markdown(
     f"""
