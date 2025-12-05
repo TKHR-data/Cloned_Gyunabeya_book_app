@@ -9,17 +9,27 @@
 from supabase import create_client, Client
 import streamlit as st
 
+from supabase import create_client, Client
+import streamlit as st
+
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-def apply_parameter_update(user_id_text: str, genre_index: int, status: str, pages: int) -> dict:
+def apply_parameter_update(
+    user_id_text: str,
+    genre_index: int,
+    prev_status: int,
+    new_status: int,
+    pages: int
+) -> dict:
     """
     キャラクターのパラメータにジャンル補正を加算する関数
     - user_id_text: ユーザーID文字列
     - genre_index: ジャンル番号
-    - status: 読書ステータス ("未読", "読了", "レビュー済")
+    - prev_status: 以前の読書ステータス (0:未登録, 1:登録済, 2:読了, 3:レビュー済)
+    - new_status: 新しい読書ステータス (0:未登録, 1:登録済, 2:読了, 3:レビュー済)
     - pages: 本のページ数
     """
 
@@ -32,15 +42,16 @@ def apply_parameter_update(user_id_text: str, genre_index: int, status: str, pag
     param = res_param.data[0] if res_param.data else {}
 
     # ステータス係数
-    def get_status_coefficient(status: str) -> float:
-        if status == "未読":
-            return 0.25
-        elif status == "読了":
-            return 1.0
-        elif status == "レビュー済":
-            return 0.5
-        else:
-            return 0.0
+    def get_status_coefficient(prev_status: int, new_status: int) -> float:
+        transition_map = {
+            (0, 1): 0.25,
+            (0, 2): 1.25,
+            (0, 3): 1.75,
+            (1, 2): 1.0,
+            (1, 3): 1.5,
+            (2, 3): 0.5,
+        }
+        return transition_map.get((prev_status, new_status), 0.0)
 
     # ページ数係数
     def get_page_coefficient(p: int) -> float:
@@ -55,7 +66,7 @@ def apply_parameter_update(user_id_text: str, genre_index: int, status: str, pag
         else:
             return 2.4
 
-    status_coef = get_status_coefficient(status)
+    status_coef = get_status_coefficient(prev_status, new_status)
     page_coef = get_page_coefficient(pages)
 
     updated = {}
@@ -66,9 +77,13 @@ def apply_parameter_update(user_id_text: str, genre_index: int, status: str, pag
         else:
             updated[key] = value
 
-        if "evolution" in char and isinstance(char["evolution"], (int, float)):
-            updated["evolution"] = char["evolution"] + pages
-        else:
-            updated["evolution"] = pages  # もし存在しない/Noneなら初期化
+    # evolution更新
+    if "evolution" in char and isinstance(char["evolution"], (int, float)):
+        updated["evolution"] = char["evolution"] + pages
+    else:
+        updated["evolution"] = pages
+
+    # 新しいステータスを更新
+    updated["status"] = new_status
 
     return char, updated
