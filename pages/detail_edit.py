@@ -2,9 +2,16 @@ import streamlit as st
 from supabase import create_client, Client
 import pandas as pd
 
-# 【注意】book_ichiran.pyと共通の接続情報に置き換えてください
-SUPABASE_URL = "今はとりあえず削除" 
-SUPABASE_KEY = "今はとりあえず削除" 
+# ⚠️ 修正箇所: ハードコードされた接続情報を削除 ----------------------------------
+
+# secrets.tomlから情報を読み込む
+try:
+    SUPABASE_URL = st.secrets["SUPABASE_URL"]
+    SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+except KeyError:
+    # 接続情報が見つからない場合のエラー処理
+    st.error("エラー: .streamlit/secrets.toml に Supabase の接続情報が記述されていません。ファイルを確認してください。")
+    st.stop() 
 
 @st.cache_resource
 def init_supabase_client():
