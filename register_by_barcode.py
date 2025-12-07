@@ -134,6 +134,9 @@ if "dict_book_info_before" in st.session_state:
         if same_isbn_book_id.data and len(same_isbn_book_id.data) > 0:
             # 更新処理
             dict_book_info_after['updated_at'] = datetime.now(JST).isoformat()
+            dict_book_info_after["prev_status"] = dict_book_info_before["new_status"]
+            status_map = {"未読": 1, "読書中": 2, "読了": 3}
+            dict_book_info_after["new_status"] = status_map[dict_book_info_after["read_status"]]
             book_id = same_isbn_book_id.data[0]["book_id"]
             supabase.table("book").update(dict_book_info_after).eq("book_id", book_id).execute()
             st.success("更新しました！")
