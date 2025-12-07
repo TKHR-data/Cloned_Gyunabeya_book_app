@@ -84,6 +84,11 @@ if "dict_api_book_info" in st.session_state:
     dict_edited_book_info["purchase_or_library"] = st.radio("購入/図書館", ["購入", "図書館"], key="input_purchase_or_library")
     dict_edited_book_info["paper_or_digital"] = st.radio("紙/電子書籍", ["紙", "電子書籍"], key="input_paper_or_digital")
     dict_edited_book_info["read_status"] = st.radio("読書状況", ["未読", "読書中", "読了"], key="input_read_status")
+    dict_edited_book_info["prev_status"] = 0
+    
+    # next_status をマッピング
+    status_map = {"未読": 1, "読書中": 2, "読了": 3}
+    dict_edited_book_info["next_status"] = status_map[dict_edited_book_info["read_status"]]
 
     # st.date_input では空欄にできないので「入力する」選択肢を追加
     completed_flag_start = st.checkbox("読み始めた日を入力する")
