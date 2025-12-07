@@ -31,6 +31,10 @@ authenticator.login(
 )
 
 status = st.session_state.get("authentication_status")
+if status:
+    # ログイン成功時にユーザー情報をセッションに保持
+    st.session_state["user_id"] = st.session_state.get("username")  # ユーザーID
+    st.session_state["user_name"] = st.session_state.get("name")     # 表示名
 
 if status:
     with st.sidebar:
