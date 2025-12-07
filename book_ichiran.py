@@ -5,8 +5,8 @@ import os
 import sys
 
 # 【注意】ここをご自身の情報に置き換えてください
-SUPABASE_URL = "https://wmcppeiutkzrxrgwguvm.supabase.co" 
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtY3BwZWl1dGt6cnhyZ3dndXZtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDU4NzQxOCwiZXhwIjoyMDgwMTYzNDE4fQ.RnAl8nkeMuLXUptiaznC2AKfgdR7XN_nhp78dH59saA" 
+SUPABASE_URL = "今はとりあえず削除" 
+SUPABASE_KEY = "今はとりあえず削除" 
 
 if SUPABASE_URL == "YOUR_SUPABASE_URL" or SUPABASE_KEY == "YOUR_SUPABASE_KEY":
     st.error("エラー: Supabase接続情報 (URL および KEY) をコード内に記述してください。")

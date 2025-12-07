@@ -3,8 +3,8 @@ from supabase import create_client, Client
 import pandas as pd
 
 # 【注意】book_ichiran.pyと共通の接続情報に置き換えてください
-SUPABASE_URL = "https://wmcppeiutkzrxrgwguvm.supabase.co" 
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtY3BwZWl1dGt6cnhyZ3dndXZtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDU4NzQxOCwiZXhwIjoyMDgwMTYzNDE4fQ.RnAl8nkeMuLXUptiaznC2AKfgdR7XN_nhp78dH59saA" 
+SUPABASE_URL = "今はとりあえず削除" 
+SUPABASE_KEY = "今はとりあえず削除" 
 
 @st.cache_resource
 def init_supabase_client():
