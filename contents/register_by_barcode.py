@@ -14,8 +14,8 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 JST = timezone(timedelta(hours=9))
 
 # user_idの取得（セッションステートから取得する想定）
-# user_id = st.session_state["user_id"]
-user_id = "test_user_01"
+user_id = st.session_state["username"]
+# user_id = "test_user_01"
 
 # アプリ処理開始
 st.title('本のバーコードから登録・編集')
