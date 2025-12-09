@@ -41,7 +41,7 @@ if status:
 
     page_home = st.Page(page="contents/temp_home.py", title="Home", icon="🏠")
     page_register_by_barcode = st.Page(page="contents/register_by_barcode.py", title="本のバーコードで登録・編集", icon="📝")
-    page_book_ichiran = st.Page(page="book_ichiran.py", title="書籍一覧", icon="📚")
+    page_book_ichiran = st.Page(page="contents/book_ichiran.py", title="書籍一覧", icon="📚")
     page_character = st.Page(page="contents/character.py", title="キャラクター", icon="🥚")
     pg = st.navigation([page_home, page_register_by_barcode, page_book_ichiran, page_character])
     pg.run()
