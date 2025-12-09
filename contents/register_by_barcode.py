@@ -14,8 +14,8 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 JST = timezone(timedelta(hours=9))
 
 # user_idの取得（セッションステートから取得する想定）
-# user_id = st.session_state["user_id"]
-user_id = "test_user_01"
+user_id = st.session_state["username"]
+# user_id = "test_user_01"
 
 # アプリ処理開始
 st.title('本のバーコードから登録・編集')
@@ -125,7 +125,7 @@ if "dict_book_info_before" in st.session_state:
                                                 ) == "公開する"                                                )
 
     # 確認用（完成品では消す）
-    st.write("登録内容（完成時は消す）:", dict_book_info_after)
+    # st.write("登録内容（完成時は消す）:", dict_book_info_after)
 
     # 登録ボタン
     if st.button("登録"):

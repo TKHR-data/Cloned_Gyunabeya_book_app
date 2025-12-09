@@ -9,39 +9,45 @@ def barcode_scanner(placeholder):
 
     # カメラデバイスに接続（0は内蔵カメラ）
     cap = cv2.VideoCapture(0)
+    # 解像度を高めに設定（1280x720）
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
     # バーコードリーダーを作成
     barcode_reader = cv2.barcode.BarcodeDetector()
 
     # 検出されたバーコード情報を格納する集合
     detected_codes = set()
+    isbn_code = None
 
     while True:
         ret, frame = cap.read()
         if not ret:
             break
 
-        # OpenCVはBGRフォーマットなので、RGBに変換
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # 表示用（カラー） OpenCVはBGRフォーマットなので、RGBに変換
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # 検出用（グレースケール）
+        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # バーコード情報を取得
         try:
-            # バーコードを検出
-            ok, decoded_info, decoded_type, corners = barcode_reader.detectAndDecode(frame) # type: ignore
+            # バーコード検出（グレースケールで処理）
+            ok, decoded_info, decoded_type, corners = barcode_reader.detectAndDecode(frame_gray) # type: ignore
         except ValueError:
-            decoded_info, decoded_type, corners = barcode_reader.detectAndDecode(frame)
+            decoded_info, decoded_type, corners = barcode_reader.detectAndDecode(frame_gray)
             ok = bool(decoded_info)
 
         if len(decoded_info) > 2:
             detected_codes.add(f'{decoded_info}')
 
-        # プレースホルダーに画像を表示
-        placeholder.image(frame, channels="RGB")
+        # プレースホルダーに画像を表示（カラー映像）
+        placeholder.image(frame_rgb, channels="RGB")
 
         # バーコードが検出されたらループを終了
         if len(detected_codes) >= 2:
             for code in detected_codes:
-                isbn_code = None
                 if code.startswith(('978', '979')):  # ISBNは978 または 979 で始まる
                     isbn_code = code
                     break

@@ -37,8 +37,19 @@ if status:
         st.markdown(f'## ようこそ、 *{st.session_state.get("name", "")}* さん')
         authenticator.logout('ログアウト', 'sidebar')
         st.divider()
-    st.write('# ログインしました!')
+    # st.write('# ログインしました!')
+
+    page_home = st.Page(page="contents/temp_home.py", title="Home", icon="🏠")
+    page_register_by_barcode = st.Page(page="contents/register_by_barcode.py", title="本のバーコードで登録・編集", icon="📝")
+    page_book_ichiran = st.Page(page="contents/book_ichiran.py", title="書籍一覧", icon="📚")
+    page_character = st.Page(page="contents/character.py", title="キャラクター", icon="🥚")
+    pg = st.navigation([page_home, page_register_by_barcode, page_book_ichiran, page_character])
+    pg.run()
+
+
 elif status is False:
     st.error('ユーザーIDかパスワードが間違っています')
 else:
-    st.warning('ユーザーIDとパスワード、入力できましたか？')
+    if st.button("ユーザー登録", key="go_register"):
+        st.switch_page("pages/register_user.py")
+    # st.warning('ユーザーIDとパスワード、入力できましたか？')

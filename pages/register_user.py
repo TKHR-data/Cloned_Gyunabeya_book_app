@@ -43,3 +43,6 @@ if submitted:
                 yaml.dump(config, file, allow_unicode=True)
 
             st.success("登録できました！ログイン画面からログインしてください。")
+
+if st.button("ログイン画面", key="go_login"):
+    st.switch_page("main.py")
