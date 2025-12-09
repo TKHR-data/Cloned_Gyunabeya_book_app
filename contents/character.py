@@ -35,7 +35,7 @@ keys_to_show = list(label_map.keys())
 # ユーザーID入力
 user_id_text = "test_user_osugi"
 
-bg_url = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/character_background_5.png"
+bg_url = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/character_background_7.PNG"
 st.markdown(f"""
 <style>
 .stApp {{
