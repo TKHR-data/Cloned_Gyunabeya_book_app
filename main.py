@@ -4,6 +4,18 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+bg_url = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/character_background_5.png"
+st.markdown(f"""
+<style>
+.stApp {{
+    background-image: url("{bg_url}");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}}
+</style>
+""", unsafe_allow_html=True)
+
 # config.yaml の絶対パス
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, "config.yaml")
@@ -51,5 +63,5 @@ elif status is False:
     st.error('ユーザーIDかパスワードが間違っています')
 else:
     if st.button("ユーザー登録", key="go_register"):
-        st.switch_page("pages/register_user.py")
+        st.switch_page("register_user")
     # st.warning('ユーザーIDとパスワード、入力できましたか？')

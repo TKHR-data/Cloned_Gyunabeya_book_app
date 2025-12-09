@@ -3,8 +3,26 @@ import streamlit as st
 import yaml
 import streamlit_authenticator as stauth
 from yaml.loader import SafeLoader
+from supabase import create_client
+
+bg_url = "https://wmcppeiutkzrxrgwguvm.supabase.co/storage/v1/object/public/material/character_background_5.png"
+st.markdown(f"""
+<style>
+.stApp {{
+    background-image: url("{bg_url}");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}}
+</style>
+""", unsafe_allow_html=True)
 
 st.title("新規ユーザー登録")
+
+# Supabase 接続
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 with st.form("register_form"):
     new_username = st.text_input("ユーザーID")
@@ -42,7 +60,18 @@ if submitted:
             with open(CONFIG_PATH, "w", encoding="utf-8") as file:
                 yaml.dump(config, file, allow_unicode=True)
 
+            # セッションに user_id 保存
+            st.session_state["user_id"] = new_username
+
+            # Supabase character テーブルに追加
+            try:
+                supabase.table("character").insert({
+                    "user_id_text": st.session_state["user_id"]
+                }).execute()
+            except Exception as e:
+                st.error(f"Supabase登録エラー: {e}")
+
             st.success("登録できました！ログイン画面からログインしてください。")
 
-if st.button("ログイン画面", key="go_login"):
-    st.switch_page("main.py")
+if st.button("ログイン画面へ戻る"):
+    st.rerun()
